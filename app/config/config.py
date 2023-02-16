@@ -6,6 +6,8 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 from pydantic import BaseSettings
 from os import getenv
+from rich import print
+import sys
 
 load_dotenv()
 
@@ -35,5 +37,10 @@ CONFIG = Settings()
 
 
 async def initiate_database():
-    client = AsyncIOMotorClient(CONFIG.mongo_uri)
-    await init_beanie(database=client.get_default_database(), document_models=[])
+    try:
+        client = AsyncIOMotorClient(CONFIG.mongo_uri)
+        await init_beanie(database=client.get_default_database(), document_models=[])
+        print(f"Connection success {client}")
+    except Exception as e:
+        print(f"Error connecting to MongoDB: {str(e)}")
+        sys.exit(1)
