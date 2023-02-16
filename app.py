@@ -1,6 +1,4 @@
-from typing import Union
-
-from fastapi import FastAPI
+""" from fastapi import FastAPI
 
 app = FastAPI()
 
@@ -29,3 +27,4 @@ async def read_user_item(
 @app.get("/feur")
 def read_feur():
     return {"Message": "Feur", "Quoi?": "Feur lol"}
+ """

@@ -1,8 +1,7 @@
-import jwt
+""" import jwt
 from os import getenv
 from dotenv import load_dotenv
 import datetime
-import time
 
 load_dotenv()
 
@@ -24,3 +23,4 @@ def decode_access_token(token):
         return "mauvais token sadge, expired"
     except jwt.InvalidTokenError:
         return "mauvais token sadge"
+ """
