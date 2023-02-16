@@ -1,0 +1,23 @@
+# Ignore les fichiers de l'environnement virtuel
+.venv
+
+# Ignore les fichiers d'environnement (dotenv)
+.env
+
+# Ignore les fichiers pycache
+__pycache__/
+
+# Ignore les fichiers pyc
+*.pyc
+
+# Ignore les fichiers de sauvegarde de l'éditeur de code
+*~
+
+# Ignore les fichiers de log
+*.log
+
+# Ignore les fichiers de configuration de l'IDE
+.idea/
+.vscode/
+dist/
+build/
