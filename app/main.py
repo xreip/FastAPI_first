@@ -56,9 +56,27 @@ async def get_food(food_name: FoodEnum):
 
     return {"Your food": food_name, "message": "You like things..."}
 
+# Query Params
+fake_items_db = [{"item_name": "FOO"}, {"item_name": "BAR"}, {
+    "item_name": "FOBAR"}, {"item_name": "BARFOO"}, {"item_name": "BFAO"},]
+
+
+@app.get("/items")  # /items?skip=2 | /items?limit=1 | /items?skip=1&limit=3
+async def list_items(skip: int = 0, limit: int = 10):
+    return fake_items_db[skip: skip + limit]
+
+
+@app.get("/items/{item_id}")
+async def get_item(item_id: str, q: str | None = None, short: bool = False):
+    item = {"item_id": item_id}
+    if q:
+        item.update({"q": q})
+    if not short:
+        item.update({"description": "Lorem ipsum dolor sit."})
+    return item
+
+
 # app.include_router(api_router) # ADD THE CENTRAL ROUTER
-
-
-@app.on_event("startup")
-async def app_init():
-    await initiate_database()
+# @app.on_event("startup")
+# async def app_init():
+#     await initiate_database()
