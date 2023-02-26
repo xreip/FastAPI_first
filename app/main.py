@@ -1,6 +1,6 @@
 from enum import Enum
 
-from fastapi import FastAPI, Depends, Query
+from fastapi import FastAPI, Depends, Query, Path
 from pydantic import BaseModel
 
 from config.config import initiate_database
@@ -146,3 +146,16 @@ async def hidden_query(hidden_query: str | None = Query(None, include_in_schema=
 # @app.on_event("startup")
 # async def app_init():
 #     await initiate_database()
+
+""" 6. Path parameters and numeric validation """
+
+
+@app.get("/item_validation/{item_id}")
+async def read_items_validation(
+    item_id: int = Path(..., title="The id of the item to get", gt=10, le=100),
+    q: str | None = Query(None, alias="item_query"),
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
