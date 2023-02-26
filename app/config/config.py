@@ -14,26 +14,9 @@ class Settings(BaseSettings):
     MONGO_URI: str
     SALT: str
 
-    # # Mongo Engine settings
-    # mongo_uri = getenv("MONGO_URI")
-
-    # # Security settings
-    # authjwt_secret_key = getenv("JWT_SECRET")
-    # salt = getenv("SALT").encode()
-
     class Config:
         env_file = '.env'
         env_file_encoding = 'utf-8'
-
-    # FastMail SMTP server settings
-    # mail_console = config("MAIL_CONSOLE", default=False, cast=bool)
-    # mail_server = config("MAIL_SERVER", default="smtp.myserver.io")
-    # mail_port = config("MAIL_PORT", default=587, cast=int)
-    # mail_username = config("MAIL_USERNAME", default="")
-    # mail_password = config("MAIL_PASSWORD", default="")
-    # mail_sender = config("MAIL_SENDER", default="noreply@myserver.io")
-
-    # testing = config("TESTING", default=False, cast=bool)
 
 
 CONFIG = Settings()
