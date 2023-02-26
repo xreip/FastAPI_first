@@ -3,24 +3,27 @@ FastAPI server configuration
 """
 from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
-from dotenv import load_dotenv
 from pydantic import BaseSettings
-from os import getenv
 from rich import print
 import sys
-
-load_dotenv()
 
 
 class Settings(BaseSettings):
     """Server config settings"""
+    JWT_SECRET: str
+    MONGO_URI: str
+    SALT: str
 
-    # Mongo Engine settings
-    mongo_uri = getenv("MONGO_URI")
+    # # Mongo Engine settings
+    # mongo_uri = getenv("MONGO_URI")
 
-    # Security settings
-    authjwt_secret_key = getenv("JWT_SECRET")
-    salt = getenv("SALT").encode()
+    # # Security settings
+    # authjwt_secret_key = getenv("JWT_SECRET")
+    # salt = getenv("SALT").encode()
+
+    class Config:
+        env_file = '.env'
+        env_file_encoding = 'utf-8'
 
     # FastMail SMTP server settings
     # mail_console = config("MAIL_CONSOLE", default=False, cast=bool)
@@ -38,7 +41,7 @@ CONFIG = Settings()
 
 async def initiate_database():
     try:
-        client = AsyncIOMotorClient(CONFIG.mongo_uri)
+        client = AsyncIOMotorClient(CONFIG.MONGO_URI)
         await init_beanie(database=client.get_default_database(), document_models=[])
         print(f"Connection success {client}")
     except Exception as e:
