@@ -1,7 +1,9 @@
-from fastapi import FastAPI, Depends
-from config.config import initiate_database
-
 from enum import Enum
+
+from fastapi import FastAPI, Depends
+from pydantic import BaseModel
+
+from config.config import initiate_database
 
 # from app.api.api import api_router
 
@@ -74,6 +76,32 @@ async def get_item(item_id: str, q: str | None = None, short: bool = False):
     if not short:
         item.update({"description": "Lorem ipsum dolor sit."})
     return item
+
+""" 4. Request body """
+
+
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+
+
+@app.post("/items")
+async def create_item(item: Item):
+    item_dict = item.dict()
+    if item.tax:
+        price_with_tax = item.price + item.tax
+        item_dict.update({"price_with_tax": price_with_tax})
+    return item_dict
+
+
+@app.put("/items/{item_id}")
+async def create_item_with_put(item_id: int, item: Item, q: str | None = None):
+    result = {"item_id": item_id, **item.dict()}
+    if q:
+        result.update({"q": q})
+    return result
 
 
 # app.include_router(api_router) # ADD THE CENTRAL ROUTER
