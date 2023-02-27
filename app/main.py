@@ -1,6 +1,6 @@
 from enum import Enum
 
-from fastapi import FastAPI, Body, Depends, Query, Path
+from fastapi import FastAPI, Body, Cookie, Depends, Header, Query, Path
 from pydantic import BaseModel, Field, HttpUrl
 
 from config.config import initiate_database
@@ -273,3 +273,16 @@ async def update_item(
 ):
     results = {"item_id": item_id, "item": item}
     return results
+
+
+""" part 11 - extra data types """
+# UUID, datetime
+
+""" part 12 - Cookie et header params """
+
+
+@app.get("/items")
+async def read_items(
+    cookie_id: str | None = Cookie(None), accept_encoding: str | None = Header(None)
+):
+    return {"cookie_id": cookie_id}
