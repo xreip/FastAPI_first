@@ -1,7 +1,7 @@
 from enum import Enum
 
 from fastapi import FastAPI, Body, Depends, Query, Path
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from config.config import initiate_database
 
@@ -192,4 +192,20 @@ async def update_item(
         results.update({"user": user})
     if importance:
         results.update({"importance": importance})
+    return results
+
+
+""" Part 8 Body - field """
+
+
+class Item8(BaseModel):
+    name: str
+    description: str | None = Field(None, title="the description", max_lenght=300)
+    price: float = Field(..., gt=0, description="The price must be more than zero")
+    tax: float | None = None
+
+
+@app.put("/items8/{item_id}")
+async def update_item(item_id: int, item: Item8 = Body(..., embed=True)):
+    results = {"item_id": item_id, "item": item}
     return results
