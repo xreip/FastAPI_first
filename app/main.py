@@ -236,3 +236,40 @@ class Item9(BaseModel):
 async def update_item(item_id: int, item: Item9):
     results = {"item_id": item_id, "item": item}
     return results
+
+
+""" Part 10 Declare request example data """
+
+
+class Item10(BaseModel):
+    name: str = Field(..., example="Foo")
+    description: str | None = Field(None, example="A very nice item")
+    price: float = Field(..., example=16.25)
+    tax: float | None = Field(None, example=1.67)
+
+    # class Config:
+    #     schema_extra = {
+    # "example": {
+    #     "name": "Foo",
+    #     "description": "A very nice item",
+    #     "price": 16.25,
+    #     "tax": 1.64,
+    # }
+    #     }
+
+
+@app.put("/items10/{item_id}")
+async def update_item(
+    item_id: int,
+    item: Item10 = Body(
+        ...,
+        example={
+            "name": "Foo",
+            "description": "A very nice item",
+            "price": 16.25,
+            "tax": 1.64,
+        },
+    ),
+):
+    results = {"item_id": item_id, "item": item}
+    return results
