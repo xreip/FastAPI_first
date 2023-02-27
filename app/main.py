@@ -1,6 +1,6 @@
 from enum import Enum
 
-from fastapi import FastAPI, Depends, Query, Path
+from fastapi import FastAPI, Body, Depends, Query, Path
 from pydantic import BaseModel
 
 from config.config import initiate_database
@@ -158,4 +158,38 @@ async def read_items_validation(
     results = {"item_id": item_id}
     if q:
         results.update({"q": q})
+    return results
+
+
+""" 7. Body - Multiple parameters """
+
+
+class User(BaseModel):
+    username: str
+    full_name: str | None = None
+
+
+# class Importance(BaseModel):
+#     importance: int
+
+
+@app.put("/7items/{item_id}")
+async def update_item(
+    *,
+    item_id: int = Path(..., title="The ID of the item", ge=0, le=150),
+    q: str | None = None,
+    item: Item | None = None,
+    # item: Item = Body(..., embed=True),
+    user: User,
+    importance: int = Body(...)
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    if item:
+        results.update({"item": item})
+    if user:
+        results.update({"user": user})
+    if importance:
+        results.update({"importance": importance})
     return results
