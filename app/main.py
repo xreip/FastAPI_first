@@ -1,7 +1,7 @@
 from enum import Enum
 
 from fastapi import FastAPI, Body, Depends, Query, Path
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, HttpUrl
 
 from config.config import initiate_database
 
@@ -207,5 +207,32 @@ class Item8(BaseModel):
 
 @app.put("/items8/{item_id}")
 async def update_item(item_id: int, item: Item8 = Body(..., embed=True)):
+    results = {"item_id": item_id, "item": item}
+    return results
+
+
+""" Part 9 Body - Nested models """
+
+
+class Image(BaseModel):
+    # url: str = Field(
+    #     ...,
+    #     regex="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)",
+    # )
+    url: HttpUrl
+    name: str
+
+
+class Item9(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+    tags: list[str] = []
+    image: Image | None = None
+
+
+@app.put("/items9/{item_id}")
+async def update_item(item_id: int, item: Item9):
     results = {"item_id": item_id, "item": item}
     return results
